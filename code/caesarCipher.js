@@ -1,5 +1,10 @@
-function caesar(string,shift) {
-
+function caesar(string,shiftValue) {
+    let output = '';
+    for (let i=0; i < string.length; i++) {
+        output += valueToLetter(shift(letterToValue(
+            stringToArray(string)[i]),shiftValue))  
+    }
+    return output
 }
 
 export{caesar}
@@ -11,22 +16,46 @@ let capAlphabet = ['A', 'B' , 'C' , 'D' , 'E' , 'F' , 'G' , 'H' , 'I' ,
  'J' , 'K' , 'L' , 'M' , 'N' , 'O' , 'P' , 'Q' , 'R' , 'S' , 'T' , 'U' ,
   'V' , 'W' , 'X' , 'Y' , 'Z']
 
-function letterToValue(letter) {
-    if (letter == letter.toUpperCase()) {
-        let value = [capAlphabet.indexOf(letter),"upper"]
-        return value
+function stringToArray(string) {
+    let array = string.split("");
+    return array;
+}
+
+  function letterToValue(letter) {
+      if (alphabet.includes(letter.toLowerCase())) {
+        if (letter == letter.toUpperCase()) {
+            let value = [capAlphabet.indexOf(letter),"upper"];
+            return value;
+        }
+        let value = [alphabet.indexOf(letter),"lower"];
+        return value;
+      }
+      let value = [letter,"misc"]
+      return value
+}
+
+function shift(value,shiftValue) {
+    if (value[1] !== "misc") {
+        if(value[0]+shiftValue < 26){
+            let shiftedValue = [value[0]+shiftValue,value[1]];
+            return shiftedValue;
+        }
+        else {
+            let shiftedValue = [value[0]+shiftValue-26,value[1]];
+            return shiftedValue;
+        }
+
     }
-    let value = [alphabet.indexOf(letter),"lower"]
-    return value
+    let shiftedValue = [value[0],value[1]];
+    return shiftedValue;
 }
 
 function valueToLetter (value) {
-    if (value[1] == "upper") {
+    if (value[1] == "misc") {
+        return (value[0])
+    }
+    else if (value[1] == "upper") {
         return (capAlphabet[value[0]])
     } 
     return (alphabet[value[0]])
 }
-
-console.log(letterToValue("B"))
-
-console.log(valueToLetter(letterToValue("B")))
